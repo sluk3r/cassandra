@@ -42,6 +42,7 @@ import com.sun.management.GcInfo;
 import org.apache.cassandra.db.lifecycle.TransactionLogs;
 import org.apache.cassandra.utils.StatusLogger;
 
+//wxc pro 2015-8-7:13:31:26 GC里可能再搞些什么事?
 public class GCInspector implements NotificationListener, GCInspectorMXBean
 {
     public static final String MBEAN_NAME = "org.apache.cassandra.service:type=GCInspector";

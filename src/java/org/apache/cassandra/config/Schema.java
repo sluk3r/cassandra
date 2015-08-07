@@ -110,7 +110,7 @@ public class Schema
      */
     public Schema loadFromDisk()
     {
-        return loadFromDisk(true);
+        return loadFromDisk(true);//wxc 2015-8-7:13:21:02 这倒是个不错的入口， 可以从这看到跟DB业务相关的逻辑。
     }
 
     /**

@@ -72,15 +72,20 @@ import org.apache.cassandra.utils.*;
  * hooks into its lifecycle methods (see {@link #setup()}, {@link #start()},
  * {@link #stop()} and {@link #setup()}).
  */
+
+/*
+1, 找到Main方法了。
+2. 以后可以从这开始往下再搞。
+ */
 public class CassandraDaemon
 {
-    public static final String MBEAN_NAME = "org.apache.cassandra.db:type=NativeAccess";
-    private static JMXConnectorServer jmxServer = null;
+    public static final String MBEAN_NAME = "org.apache.cassandra.db:type=NativeAccess";//wxc 2015-8-7:12:54:44  JMX埋点
+    private static JMXConnectorServer jmxServer = null;//wxc 2015-8-7:12:59:54 这个类第一次见。
 
     private static final Logger logger;
     static {
         // Need to register metrics before instrumented appender is created(first access to LoggerFactory).
-        SharedMetricRegistries.getOrCreate("logback-metrics").addListener(new MetricRegistryListener.Base()
+        SharedMetricRegistries.getOrCreate("logback-metrics").addListener(new MetricRegistryListener.Base() //wxc pro 2015-8-7:13:01:49 这个SharedMetricRegistries类似于Zookeeper？ 从github上搜了下，看到这样的描述： Capturing JVM- and application-level metrics. So you know what's going on。 http://metrics.dropwizard.io/3.1.0/ 这个功能跟JMX重叠？
         {
             @Override
             public void onMeterAdded(String metricName, Meter meter)
@@ -97,6 +102,7 @@ public class CassandraDaemon
         logger = LoggerFactory.getLogger(CassandraDaemon.class);
     }
 
+    //wxc pro 2015-8-7:13:17:14 名字上加个maybe具体什么意思？
     private static void maybeInitJmx()
     {
         if (System.getProperty("com.sun.management.jmxremote.port") != null)
@@ -122,13 +128,13 @@ public class CassandraDaemon
         }
     }
 
-    private static final CassandraDaemon instance = new CassandraDaemon();
+    private static final CassandraDaemon instance = new CassandraDaemon();//wxc 2015-8-7:13:07:23 也是类加载时就初始化了实例。
 
-    public Server thriftServer;
-    public Server nativeServer;
+    public Server thriftServer;//wxc pro 2015-8-7:13:07:51 这个thriftServer没有Cassandra里？它跟CassandraDaemon怎么通信？
+    public Server nativeServer;//wxc pro 2015-8-7:13:08:38 这是个什么？
 
-    private final boolean runManaged;
-    protected final StartupChecks startupChecks;
+    private final boolean runManaged;//wxc pro 2015-8-7:13:08:55 标识着什么？
+    protected final StartupChecks startupChecks;//wxc pro 2015-8-7:13:09:06 校验配置项？
     private boolean setupCompleted;
 
     public CassandraDaemon() {
@@ -152,11 +158,11 @@ public class CassandraDaemon
         if (FBUtilities.isWindows())
             WindowsFailedSnapshotTracker.deleteOldSnapshots();
 
-        ThreadAwareSecurityManager.install();
+        ThreadAwareSecurityManager.install();//wxc pro 2015-8-7:13:15:26 这个类ThreadAwareSecurityManager能搞啥？
 
         logSystemInfo();
 
-        CLibrary.tryMlockall();
+        CLibrary.tryMlockall();//wxc pro 2015-8-7:13:16:29 从这看是有C语言相关的东西？ 结合前面的Native字样， 貌似。
 
         try
         {
@@ -181,7 +187,7 @@ public class CassandraDaemon
 
         maybeInitJmx();
 
-        Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler()
+        Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() //wxc 2015-8-7:13:18:02 第一次见定制这个ExceptionHandler的。
         {
             public void uncaughtException(Thread t, Throwable e)
             {
@@ -219,20 +225,20 @@ public class CassandraDaemon
         StorageService.instance.populateTokenMetadata();
 
         // load schema from disk
-        Schema.instance.loadFromDisk();
+        Schema.instance.loadFromDisk();//wxc 2015-8-7:13:20:21 第一次看到Schema相关的东西了。
 
-        // clean up debris in the rest of the keyspaces
+        // clean up debris in the rest of the keyspaces //wxc pro 2015-8-7:13:22:22 debris指？
         for (String keyspaceName : Schema.instance.getKeyspaces())
         {
             // Skip system as we've already cleaned it
             if (keyspaceName.equals(SystemKeyspace.NAME))
                 continue;
 
-            for (CFMetaData cfm : Schema.instance.getTables(keyspaceName))
+            for (CFMetaData cfm : Schema.instance.getTables(keyspaceName))//wxc 2015-8-7:13:22:56 像这样的庞大的工程， 出于什么考虑没有用Spring这类的IoC？
                 ColumnFamilyStore.scrubDataDirectories(cfm);
         }
 
-        Keyspace.setInitialized();
+        Keyspace.setInitialized();//wxc pro 2015-8-7:13:23:59 感觉这个Key是列存储里很重要的一个概念。
         // initialize keyspaces
         for (String keyspaceName : Schema.instance.getKeyspaces())
         {
@@ -248,7 +254,8 @@ public class CassandraDaemon
             }
         }
 
-        if (CacheService.instance.keyCache.size() > 0)
+        //wxc pro 2015-8-7:13:29:14 Cache是按key和row来细分的？
+        if (CacheService.instance.keyCache.size() > 0)//wxc 2015-8-7:13:25:02 也是自己设计的Cache？
             logger.info("completed pre-loading ({} keys) key cache.", CacheService.instance.keyCache.size());
 
         if (CacheService.instance.rowCache.size() > 0)
@@ -267,7 +274,7 @@ public class CassandraDaemon
         // replay the log if necessary
         try
         {
-            CommitLog.instance.recover();
+            CommitLog.instance.recover();//wxc pro 2015-8-7:13:32:34 这个是处理上一次意外死机的数据丢失问题？
         }
         catch (IOException e)
         {
@@ -287,7 +294,7 @@ public class CassandraDaemon
             }
         }
 
-        Runnable indexRebuild = new Runnable()
+        Runnable indexRebuild = new Runnable()//wxc pro 2015-8-7:13:44:31 从这开始可以看出DB里建索引的相关逻辑？
         {
             @Override
             public void run()
@@ -401,6 +408,8 @@ public class CassandraDaemon
      *            the arguments passed in from JSVC
      * @throws IOException
      */
+    //wxc pro 2015-8-7:13:14:07  commons Daemon 还是第一次见。
+    //wxc pro 2015-8-7:13:14:35 怎么是JSVC？
     public void init(String[] arguments) throws IOException
     {
         setup();

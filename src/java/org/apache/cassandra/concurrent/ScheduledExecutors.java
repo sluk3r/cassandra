@@ -37,7 +37,7 @@ public class ScheduledExecutors
     }
 
     /**
-     * This executor is used for tasks that do not need to be waited for on shutdown/drain.
+     * This executor is used for tasks that do not need to be waited for on shutdown/drain.//wxc pro 2015-8-7:13:43:32 这里的wait与否在哪里体现？
      */
     public static final DebuggableScheduledThreadPoolExecutor optionalTasks = new DebuggableScheduledThreadPoolExecutor("OptionalTasks");
 }

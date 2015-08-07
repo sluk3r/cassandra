@@ -37,8 +37,10 @@ import org.apache.cassandra.utils.JVMStabilityInspector;
  * For fire and forget tasks (like ref tidy) we can safely ignore the exceptions.
  * For any callers that care to know their task was rejected we cancel passed task.
  */
+//wxc 2015-8-7:13:39:01 应该只是在原来的Executor上加了一层log。
 public class DebuggableScheduledThreadPoolExecutor extends ScheduledThreadPoolExecutor
 {
+
     private static final Logger logger = LoggerFactory.getLogger(DebuggableScheduledThreadPoolExecutor.class);
 
     public static final RejectedExecutionHandler rejectedExecutionHandler = new RejectedExecutionHandler()

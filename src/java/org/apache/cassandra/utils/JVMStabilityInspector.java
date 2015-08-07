@@ -104,7 +104,7 @@ public final class JVMStabilityInspector
         return oldKiller;
     }
 
-    @VisibleForTesting
+    @VisibleForTesting  //wxc pro 2015-8-7:13:18:58 这个VisibleForTesting背后实现的机理？ 怎么就选择性的Visible了？ Test那边要什么样的配置？ Test那边是不是也得用Guava？
     public static class Killer
     {
         private final AtomicBoolean killing = new AtomicBoolean();
