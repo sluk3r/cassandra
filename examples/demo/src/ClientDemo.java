@@ -35,6 +35,7 @@ import static org.junit.Assert.assertNotNull;
 
 /**
  * Created by wangxichun on 2015/8/8.
+ * 用ClientDemo连接Debug方式启动的Server， 发请求， 看Request的处理路径。 同时也体会下在自己的Application中怎么用Cassandra的API。 另外注意的还有jdbc版的API
  */
 public class ClientDemo
 {
