@@ -131,7 +131,7 @@ public class CassandraDaemon
     private static final CassandraDaemon instance = new CassandraDaemon();//wxc 2015-8-7:13:07:23 也是类加载时就初始化了实例。
 
     public Server thriftServer;//wxc pro 2015-8-7:13:07:51 这个thriftServer没有Cassandra里？它跟CassandraDaemon怎么通信？
-    public Server nativeServer;//wxc pro 2015-8-7:13:08:38 这是个什么？
+    public Server nativeServer;//wxc pro 2015-8-7:13:08:38 这是个什么？ 2015-8-8 18:38:11 后来看到这个nativeServer并不是JVM里的native的意思， 而Cassandra里native的意思， 相对thrift而言的。 这样通了。 看来这个server是专门用来接收请求的。
 
     private final boolean runManaged;//wxc pro 2015-8-7:13:08:55 标识着什么？
     protected final StartupChecks startupChecks;//wxc pro 2015-8-7:13:09:06 校验配置项？
@@ -274,7 +274,7 @@ public class CassandraDaemon
         // replay the log if necessary
         try
         {
-            CommitLog.instance.recover();//wxc pro 2015-8-7:13:32:34 这个是处理上一次意外死机的数据丢失问题？
+            CommitLog.instance.recover();//wxc pro 2015-8-7:13:32:34 这个是处理上一次意外死机的数据丢失问题？ 一次性run， 并没有worker在跑
         }
         catch (IOException e)
         {
@@ -312,10 +312,10 @@ public class CassandraDaemon
         ScheduledExecutors.optionalTasks.schedule(indexRebuild, StorageService.RING_DELAY, TimeUnit.MILLISECONDS);
 
 
-        SystemKeyspace.finishStartup();
+        SystemKeyspace.finishStartup();  //wxc 2015-8-7:20:34:46 放这个到一个单独的方法里貌似更合适。
 
         // start server internals
-        StorageService.instance.registerDaemon(this);
+        StorageService.instance.registerDaemon(this);//wxc 2015-8-8:8:47:54 又一个重量级角色上场了。
         try
         {
             StorageService.instance.initServer();
@@ -326,7 +326,7 @@ public class CassandraDaemon
             exitOrFail(1, "Fatal configuration error", e);
         }
 
-        Mx4jTool.maybeLoad();
+        Mx4jTool.maybeLoad();//wxc pro 2015-8-8:9:06:56  Mx4j是个什么东东？
 
         // Metrics
         String metricsReporterConfigFile = System.getProperty("cassandra.metricsReporterConfigFile");
@@ -367,6 +367,8 @@ public class CassandraDaemon
         InetAddress nativeAddr = DatabaseDescriptor.getRpcAddress();
         int nativePort = DatabaseDescriptor.getNativeTransportPort();
         nativeServer = new org.apache.cassandra.transport.Server(nativeAddr, nativePort);
+
+        //wxc pro 2015-8-8:9:13:21 上面的两个server是都开么？
 
         setupCompleted = true;
     }
@@ -482,7 +484,7 @@ public class CassandraDaemon
      */
     public void activate()
     {
-        String pidFile = System.getProperty("cassandra-pidfile");
+        String pidFile = System.getProperty("cassandra-pidfile");//wxc 2015-8-8:10:00:36 debug运行时发现没有pid文件。
 
         if (FBUtilities.isWindows())
         {
@@ -564,6 +566,7 @@ public class CassandraDaemon
         }
     }
 
+    //wxc pro 2015-8-8:9:10:18 这个方法貌似是等待手动关闭其他同端口号的应用？
     private void waitForGossipToSettle()
     {
         int forceAfter = Integer.getInteger("cassandra.skip_wait_for_gossip_to_settle", -1);

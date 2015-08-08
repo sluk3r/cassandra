@@ -134,9 +134,9 @@ public class Server implements CassandraDaemon.Server
     private void run()
     {
         // Configure the server.
-        eventExecutorGroup = new RequestThreadPoolExecutor();
+        eventExecutorGroup = new RequestThreadPoolExecutor();//wxc 2015-8-8:18:42:05 用Executor方式体现出Group来。
 
-        boolean hasEpoll = enableEpoll ? Epoll.isAvailable() : false;
+        boolean hasEpoll = enableEpoll ? Epoll.isAvailable() : false;//wxc 2015-8-8:18:43:48 看了isAvailable方法的实现： 是判断一个异常， 如果没有异常表现可用。现在公司JMQ的配置貌似可以用这样方式来判断。
         if (hasEpoll)
         {
             workerGroup = new EpollEventLoopGroup();
@@ -144,7 +144,7 @@ public class Server implements CassandraDaemon.Server
         }
         else
         {
-            workerGroup = new NioEventLoopGroup();
+            workerGroup = new NioEventLoopGroup();//wxc pro 2015-8-8:18:45:46 以前以为Nio跟Epoll是一回事， 现在看来有差别。
             logger.info("Netty using Java NIO event loop");
         }
 
@@ -166,14 +166,14 @@ public class Server implements CassandraDaemon.Server
         }
         else
         {
-            bootstrap.childHandler(new Initializer(this));
+            bootstrap.childHandler(new Initializer(this));//wxc pro 2015-8-8:18:48:16 这个Initializer里表现着什么？
         }
 
         // Bind and start to accept incoming connections.
         logger.info("Using Netty Version: {}", Version.identify().entrySet());
         logger.info("Starting listening for CQL clients on {}...", socket);
 
-        ChannelFuture bindFuture = bootstrap.bind(socket);
+        ChannelFuture bindFuture = bootstrap.bind(socket);//wxc 2015-8-8:18:48:53 Future跟net结合起来， 8错。
         if (!bindFuture.awaitUninterruptibly().isSuccess())
             throw new IllegalStateException(String.format("Failed to bind port %d on %s.", socket.getPort(), socket.getAddress().getHostAddress()));
 

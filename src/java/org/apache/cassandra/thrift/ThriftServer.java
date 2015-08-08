@@ -67,7 +67,7 @@ public class ThriftServer implements CassandraDaemon.Server
             server.stopServer();
             try
             {
-                server.join();
+                server.join();//wxc 2015-8-8:9:26:31 等别的线程结束。
             }
             catch (InterruptedException e)
             {

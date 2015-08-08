@@ -15,23 +15,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.cassandra.utils;
 
-import com.google.common.base.Throwables;
+package org.apache.cassandra.simpleDemo;
 
-public abstract class WrappedRunnable implements Runnable
+/**
+ * Just for show how many threads are created and what.
+ * Created by wangxichun on 2015/8/8.
+ */
+public class HelloWorld
 {
-    public final void run()
+    public static void main(String[] args)
     {
-        try
-        {
-            runMayThrow();
-        }
-        catch (Exception e)
-        {
-            throw Throwables.propagate(e);//wxc pro 2015-8-8:9:00:54 这样的异常背后是什么逻辑？ 自己什么情况下用这个异常？
-        }
+        System.out.println("hello world~~~~~~~");
+        System.out.println("hello world2~~~~~~~");
     }
-
-    abstract protected void runMayThrow() throws Exception;
 }

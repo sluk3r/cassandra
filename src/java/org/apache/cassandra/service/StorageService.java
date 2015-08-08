@@ -583,12 +583,12 @@ public class StorageService extends NotificationBroadcasterSupport implements IE
 
     public synchronized void initServer(int delay) throws ConfigurationException
     {
-        logger.info("Cassandra version: {}", FBUtilities.getReleaseVersionString());
-        logger.info("Thrift API version: {}", cassandraConstants.VERSION);
+        logger.info("Cassandra version: {}", FBUtilities.getReleaseVersionString());//wxc 2015-8-8:8:50:47 注意到logger本身有自己的点位符， 没必要用String的format方法。
+        logger.info("Thrift API version: {}", cassandraConstants.VERSION);//wxc 2015-8-8:8:50:00 这样的version每天都怎么管理的？ 手动还是自动？
         logger.info("CQL supported versions: {} (default: {})",
                     StringUtils.join(ClientState.getCQLSupportedVersion(), ","), ClientState.DEFAULT_CQL_VERSION);
 
-        initialized = true;
+        initialized = true;//wxc pro 2015-8-8:8:51:31 这里就置为true是不是有早？
 
         try
         {
@@ -605,7 +605,7 @@ public class StorageService extends NotificationBroadcasterSupport implements IE
         if (Boolean.parseBoolean(System.getProperty("cassandra.load_ring_state", "true")))
         {
             logger.info("Loading persisted ring state");
-            Multimap<InetAddress, Token> loadedTokens = SystemKeyspace.loadTokens();
+            Multimap<InetAddress, Token> loadedTokens = SystemKeyspace.loadTokens();//wxc 2015-8-8:8:52:45 这样用静态方法的方式还是有些不太习惯。
             Map<InetAddress, UUID> loadedHostIds = SystemKeyspace.loadHostIds();
             for (InetAddress ep : loadedTokens.keySet())
             {
@@ -688,15 +688,15 @@ public class StorageService extends NotificationBroadcasterSupport implements IE
                     logger.warn("Miscellaneous task executor still busy after one minute; proceeding with shutdown");
             }
         }, "StorageServiceShutdownHook");
-        Runtime.getRuntime().addShutdownHook(drainOnShutdown);
+        Runtime.getRuntime().addShutdownHook(drainOnShutdown);//wxc pro 2015-8-8:9:02:39 这个Hook加在这里有什么特殊考虑？ 别的地貌似也可以。
 
         replacing = DatabaseDescriptor.isReplacing();
 
-        prepareToJoin();
+        prepareToJoin();//wxc pro 2015-8-8:9:03:37  要join什么？ 怎么个join法？
 
         // Has to be called after the host id has potentially changed in prepareToJoin().
-        for (ColumnFamilyStore cfs : ColumnFamilyStore.all())
-            if (cfs.metadata.isCounter())
+        for (ColumnFamilyStore cfs : ColumnFamilyStore.all())//wxc pro 2015-8-8:9:04:40   ColumnFamilyStore怎么理解？
+            if (cfs.metadata.isCounter())//wxc pro 2015-8-8:9:05:08 表示关心计数方面的？
                 cfs.initCounterCache();
 
         if (Boolean.parseBoolean(System.getProperty("cassandra.join_ring", "true")))

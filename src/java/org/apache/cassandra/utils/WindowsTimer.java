@@ -40,7 +40,7 @@ public final class WindowsTimer
         }
     }
 
-    private static native int timeBeginPeriod(int period) throws LastErrorException;
+    private static native int timeBeginPeriod(int period) throws LastErrorException;//wxc pro 2015-8-8:9:17:10 这个东西在Windows下怎么找到？ Native方法。
     private static native int timeEndPeriod(int period) throws LastErrorException;
 
     private WindowsTimer() {}

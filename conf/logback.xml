@@ -40,7 +40,9 @@
   
   <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
     <encoder>
-      <pattern>%-5level %date{HH:mm:ss,SSS} %msg%n</pattern>
+      <!--<pattern>%-5level %date{HH:mm:ss,SSS} %msg%n</pattern>-->
+      <!--<pattern>%-5level %date{HH:mm:ss,SSS} %C.(:%line) %msg%n</pattern>-->
+      <pattern>[%date %-5level %logger:%line] [%thread] - %msg%n</pattern>
     </encoder>
   </appender>
 
@@ -48,7 +50,7 @@
   <appender name="LogbackMetrics" class="com.codahale.metrics.logback.InstrumentedAppender" />
    -->
 
-  <root level="INFO">
+  <root level="DEBUG">
     <appender-ref ref="FILE" />
     <appender-ref ref="STDOUT" />
     <!--

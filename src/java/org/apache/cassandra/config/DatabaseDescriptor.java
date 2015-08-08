@@ -50,7 +50,7 @@ import org.apache.cassandra.thrift.ThriftServer;
 import org.apache.cassandra.utils.ByteBufferUtil;
 import org.apache.cassandra.utils.FBUtilities;
 import org.apache.cassandra.utils.memory.*;
-
+//wxc 2015-8-8:18:47:04 这个貌似是配置项的入口
 public class DatabaseDescriptor
 {
     private static final Logger logger = LoggerFactory.getLogger(DatabaseDescriptor.class);
@@ -95,7 +95,7 @@ public class DatabaseDescriptor
     private static Comparator<InetAddress> localComparator;
     private static EncryptionContext encryptionContext;
 
-    public static void forceStaticInitialization() {}
+    public static void forceStaticInitialization() {}//wxc 2015-8-8:9:18:29 这个不错， 相当于在这里加一个阀门， Force的作用达到。
     static
     {
         // In client mode, we use a default configuration. Note that the fields of this class will be
