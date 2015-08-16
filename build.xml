@@ -1736,8 +1736,8 @@
       </java>
   </target>
 
-  <!-- Generate IDEA project description files -->
-  <target name="generate-idea-files" depends="build-test" description="Generate IDEA files">
+  <!-- Generate IDEA project description files  depends="build-test"  -->
+  <target name="generate-idea-files" description="Generate IDEA files">
     <echo file="${eclipse.project.name}.iml"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
 <module type="JAVA_MODULE" version="4">
   <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_8" inherit-compiler-output="false">

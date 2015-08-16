@@ -100,7 +100,7 @@ public class StartupChecks
     public void verify() throws StartupException
     {
         for (StartupCheck test : preFlightChecks)
-            test.execute();
+            test.execute();//wxc 2015-8-15:21:55:56 如果让自己写很可能会写成一连串的static方法。 这样比较合适， 类命名顾名思义。
     }
 
     public static final StartupCheck checkValidLaunchDate = new StartupCheck()

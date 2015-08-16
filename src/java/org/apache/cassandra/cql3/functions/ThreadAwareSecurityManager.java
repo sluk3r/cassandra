@@ -41,6 +41,7 @@ import sun.security.util.SecurityConstants;
  * This is better than the penalty of 1 to 3 percent using a standard {@code SecurityManager} with an <i>allow all</i> policy.
  * </p>
  */
+//wxc 2015-8-15:21:41:35 第一次见这个父类使用。
 public final class ThreadAwareSecurityManager extends SecurityManager
 {
     static final PermissionCollection noPermissions = new PermissionCollection()

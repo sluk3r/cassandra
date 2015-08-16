@@ -155,7 +155,7 @@ public class CassandraDaemon
     protected void setup()
     {
         // Delete any failed snapshot deletions on Windows - see CASSANDRA-9658
-        if (FBUtilities.isWindows())
+        if (FBUtilities.isWindows()) //wxc 2015-8-15:21:37:22 什么东西只有Windows下才有？ 另外是不是对Windows的判断是不是可以优雅些？
             WindowsFailedSnapshotTracker.deleteOldSnapshots();
 
         ThreadAwareSecurityManager.install();//wxc pro 2015-8-7:13:15:26 这个类ThreadAwareSecurityManager能搞啥？

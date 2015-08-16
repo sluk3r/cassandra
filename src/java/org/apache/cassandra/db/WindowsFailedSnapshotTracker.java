@@ -48,11 +48,11 @@ public class WindowsFailedSnapshotTracker
 
     public static void deleteOldSnapshots()
     {
-        if (new File(TODELETEFILE).exists())
+        if (new File(TODELETEFILE).exists())//wxc pro 2015-8-15:21:39:37 这个是什么时候生成的？
         {
             try
             {
-                BufferedReader reader = new BufferedReader(new FileReader(TODELETEFILE));
+                BufferedReader reader = new BufferedReader(new FileReader(TODELETEFILE));//wxc pro 2015-8-15:21:38:50 前面已经创建了一个File， 这里又重复创建？
                 String snapshotDirectory;
                 while ((snapshotDirectory = reader.readLine()) != null)
                 {
