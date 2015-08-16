@@ -269,6 +269,7 @@ public class CommitLogReplayer
     }
 
     @SuppressWarnings("resource")
+    //wxc 2015-8-16:17:09:46 recover方法很长。
     public void recover(File file) throws IOException
     {
         CommitLogDescriptor desc = CommitLogDescriptor.fromFileName(file.getName());
