@@ -57,6 +57,7 @@ import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
 
+//wxc pro 2015-8-16:21:52:18 Anti的意思是？
 public class AntiCompactionTest
 {
     private static final String KEYSPACE1 = "AntiCompactionTest";
@@ -74,7 +75,7 @@ public class AntiCompactionTest
     }
 
     @After
-    public void truncateCF()
+    public void truncateCF() //wxc pro 2015-8-16:21:52:47 CF是ColumnFamily的缩写。
     {
         Keyspace keyspace = Keyspace.open(KEYSPACE1);
         ColumnFamilyStore store = keyspace.getColumnFamilyStore(CF);
