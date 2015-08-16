@@ -397,6 +397,7 @@ public class CommitLog implements CommitLogMBean
     /**
      * Shuts down the threads used by the commit log, blocking until completion.
      */
+    //wxc 2015-8-16:21:33:03 commitLog里有自己的线程。 都做了什么？
     public void shutdownBlocking() throws InterruptedException
     {
         executor.shutdown();

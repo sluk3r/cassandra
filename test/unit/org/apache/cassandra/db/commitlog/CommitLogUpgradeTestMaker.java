@@ -46,11 +46,12 @@ import org.apache.cassandra.utils.FBUtilities;
 
 import static org.apache.cassandra.db.commitlog.CommitLogUpgradeTest.*;
 
+//wxc 2015-8-16:21:23:14 应该是日志文件的生成代码。
 public class CommitLogUpgradeTestMaker
 {
     public static ByteBuffer dataSource;
 
-    private static int NUM_THREADS = 4 * Runtime.getRuntime().availableProcessors() - 1;
+    private static int NUM_THREADS = 4 * Runtime.getRuntime().availableProcessors() - 1;//wxc pro 2015-8-16:21:24:02 第一次见这样定义线程数。 不过为啥要乘以4？
     public static int numCells = 1;
     public static int cellSize = 256;
     public static int rateLimit = 0;
@@ -87,10 +88,10 @@ public class CommitLogUpgradeTestMaker
             {
                 fis.getChannel().read(dataSource);
             }
-            dataSource.flip();
+            dataSource.flip();//wxc 2015-8-16:21:24:50 应该是把CHANGES.txt的内容读出来放到dataSource里。
         }
 
-        SchemaLoader.loadSchema();
+        SchemaLoader.loadSchema();//wxc 2015-8-16:21:25:57 原来这个类是测试的类。 不过从这个类的定义与实现上应该能看出一个精简版的Cassandra服务。
         SchemaLoader.schemaDefinition("");
     }
 
@@ -225,7 +226,7 @@ public class CommitLogUpgradeTestMaker
         public void run()
         {
             RateLimiter rl = rateLimit != 0 ? RateLimiter.create(rateLimit) : null;
-            final ThreadLocalRandom tlr = ThreadLocalRandom.current();
+            final ThreadLocalRandom tlr = ThreadLocalRandom.current(); //wxc 2015-8-16:21:30:02 线程隔离的Random类。
             while (!stop)
             {
                 if (rl != null)

@@ -60,7 +60,7 @@ public class SchemaLoader
     @After
     public void leakDetect() throws InterruptedException
     {
-        System.gc();
+        System.gc();//wxc 2015-8-16:21:27:28 这样方式来LeakDetect也是醉了。
         System.gc();
         System.gc();
         Thread.sleep(10);

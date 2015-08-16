@@ -32,6 +32,6 @@ public class Throwables
     public static void maybeFail(Throwable fail)
     {
         if (fail != null)
-            com.google.common.base.Throwables.propagate(fail);
+            com.google.common.base.Throwables.propagate(fail);//wxc 2015-8-16:21:36:32 又看到这个，完整地看这方面的文档。
     }
 }
