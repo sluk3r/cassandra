@@ -222,6 +222,7 @@
     </target>
  
     <target name="gen-cql3-grammar" depends="check-gen-cql3-grammar" unless="cql3current">
+      <echo>Info ${build.dir.lib}/jars/antlr-3.5.2.jar</echo>
       <echo>Building Grammar ${build.src.java}/org/apache/cassandra/cql3/Cql.g  ...</echo>
       <java classname="org.antlr.Tool"
             classpath="${build.dir.lib}/jars/antlr-3.5.2.jar;${build.lib}/antlr-runtime-3.5.2.jar;${build.lib}/ST4-4.0.8.jar"
