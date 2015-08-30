@@ -62,7 +62,7 @@ public class PerRowSecondaryIndexTest
 
     @BeforeClass
     public static void defineSchema() throws ConfigurationException
-    {
+    {//wxc 2015-8-19:12:50:33 这个是不是放到父类里好一些？
         SchemaLoader.prepareServer();
         SchemaLoader.createKeyspace(KEYSPACE1,
                                     KeyspaceParams.simple(1),
@@ -78,7 +78,7 @@ public class PerRowSecondaryIndexTest
     @Test
     public void testIndexInsertAndUpdate()
     {
-        int nowInSec = FBUtilities.nowInSeconds();
+        int nowInSec = FBUtilities.nowInSeconds();//wxc pro 2015-8-19:12:53:32 相当于时间戳？
 
         // create a row then test that the configured index instance was able to read the row
         CFMetaData cfm = Schema.instance.getCFMetaData(KEYSPACE1, CF_INDEXED);
@@ -86,7 +86,7 @@ public class PerRowSecondaryIndexTest
 
         RowUpdateBuilder builder = new RowUpdateBuilder(cfm, FBUtilities.timestampMicros(), "k1");
         builder.add("indexed", ByteBufferUtil.bytes("foo"));
-        builder.build().apply();
+        builder.build().apply();//wxc pro 2015-8-19:12:58:56 apply中是不是有事件产生？
 
 
         UnfilteredRowIterator indexedRow = PerRowSecondaryIndexTest.TestIndex.LAST_INDEXED_PARTITION;

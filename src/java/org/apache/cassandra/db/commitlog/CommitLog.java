@@ -255,7 +255,7 @@ public class CommitLog implements CommitLogMBean
                                                              totalSize, MAX_MUTATION_SIZE));
         }
 
-        Allocation alloc = allocator.allocate(mutation, (int) totalSize);
+        Allocation alloc = allocator.allocate(mutation, (int) totalSize);//wxc pro 2015-8-19:13:13:43 还有像C中那样的Allocation？
         CRC32 checksum = new CRC32();
         final ByteBuffer buffer = alloc.getBuffer();
         try (BufferedDataOutputStreamPlus dos = new DataOutputBufferFixed(buffer))

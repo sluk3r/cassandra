@@ -428,13 +428,13 @@ public class Keyspace
             }
         }
         int nowInSec = FBUtilities.nowInSeconds();
-        try (OpOrder.Group opGroup = writeOrder.start())
+        try (OpOrder.Group opGroup = writeOrder.start()) //wxc pro 2015-8-19:13:07:51 writeOrder什么概念？ 是写队列？ start何解？
         {
             // write the mutation to the commitlog and memtables
             ReplayPosition replayPosition = null;
             if (writeCommitLog)
             {
-                Tracing.trace("Appending to commitlog");
+                Tracing.trace("Appending to commitlog");//wxc pro 2015-8-19:13:10:58 这个Trace跟后面的Log有什么区别？ 多做了什么？
                 replayPosition = CommitLog.instance.add(mutation);
             }
 

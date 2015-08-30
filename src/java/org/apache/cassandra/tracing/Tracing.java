@@ -253,11 +253,11 @@ public class Tracing
     // normal traces get zero-, one-, and two-argument overloads so common case doesn't need to create varargs array
     public static void trace(String message)
     {
-        final TraceState state = instance.get();
+        final TraceState state = instance.get();//wxc pro 2015-8-19:13:09:56 也看到trace。
         if (state == null) // inline isTracing to avoid implicit two calls to state.get()
             return;
 
-        state.trace(message);
+        state.trace(message);//wxc pro 2015-8-19:13:10:36 状态模式？
     }
 
     public static void trace(String format, Object arg)

@@ -30,7 +30,7 @@ import org.apache.cassandra.utils.SearchIterator;
 /**
  * Abstract common class for all non-thread safe Partition implementations.
  */
-public abstract class AbstractThreadUnsafePartition implements Partition, Iterable<Row>
+public abstract class AbstractThreadUnsafePartition implements Partition, Iterable<Row> //wxc 2015-8-19:13:15:20 直接在名字上体现是否线程安全？
 {
     protected final CFMetaData metadata;
     protected final DecoratedKey key;
