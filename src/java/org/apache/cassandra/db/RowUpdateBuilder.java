@@ -169,10 +169,10 @@ public class RowUpdateBuilder
 
     public Mutation build()
     {
-        Row.Builder builder = regularBuilder == null ? staticBuilder : regularBuilder;
+        Row.Builder builder = regularBuilder == null ? staticBuilder : regularBuilder;//wxc 2015-8-31:21:38:37 前面实际上已经建好了。
         if (builder != null)
-            update.add(builder.build());
-        return mutation;
+            update.add(builder.build());//wxc pro 2015-8-31:21:39:09 这个update里收集着要执行的修改， 最后再在apply时一股脑地执行。
+        return mutation;//wxc 2015-8-31:21:40:10 这样这个mutation就对上名字了： 它里面封装了要执行的操作。
     }
 
     public PartitionUpdate buildUpdate()

@@ -66,6 +66,7 @@ public class PerRowSecondaryIndexTest
         SchemaLoader.prepareServer();
         SchemaLoader.createKeyspace(KEYSPACE1,
                                     KeyspaceParams.simple(1),
+                                    //wxc 2015-8-31:21:00:59 perRowIndexedCFMD 方法里把自定义的Index类设置进去， 再反射地创建出来。 这种方法不错。
                                     SchemaLoader.perRowIndexedCFMD(KEYSPACE1, CF_INDEXED));
     }
 
@@ -84,11 +85,12 @@ public class PerRowSecondaryIndexTest
         CFMetaData cfm = Schema.instance.getCFMetaData(KEYSPACE1, CF_INDEXED);
         ColumnDefinition cdef = cfm.getColumnDefinition(new ColumnIdentifier("indexed", true));
 
-        RowUpdateBuilder builder = new RowUpdateBuilder(cfm, FBUtilities.timestampMicros(), "k1");
-        builder.add("indexed", ByteBufferUtil.bytes("foo"));
+        RowUpdateBuilder builder = new RowUpdateBuilder(cfm, FBUtilities.timestampMicros(), "k1");//wxc 2015-8-31:21:30:31 貌似cfm是存储里最核心的东西。
+        builder.add("indexed", ByteBufferUtil.bytes("foo"));//wxc 2015-8-31:21:36:47 前面的ColumnDefinition已经定义好了。
         builder.build().apply();//wxc pro 2015-8-19:12:58:56 apply中是不是有事件产生？
 
 
+        //wxc 2015-8-31:20:37:35 这种方式不错： 在必经之路上设置一个取变量的地方。
         UnfilteredRowIterator indexedRow = PerRowSecondaryIndexTest.TestIndex.LAST_INDEXED_PARTITION;
         assertNotNull(indexedRow);
         assertEquals(ByteBufferUtil.bytes("foo"), UnfilteredRowIterators.filter(indexedRow, nowInSec).next().getCell(cdef).value());
@@ -165,6 +167,7 @@ public class PerRowSecondaryIndexTest
         }
     }
 
+    //wxc pro 2015-8-31:20:44:07 一个问题： 这个TestIndex是什么时候注入到整体机制里的？
     public static class TestIndex extends PerRowSecondaryIndex
     {
         public static UnfilteredRowIterator LAST_INDEXED_PARTITION;

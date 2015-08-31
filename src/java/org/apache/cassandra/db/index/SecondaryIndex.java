@@ -206,8 +206,8 @@ public abstract class SecondaryIndex
             SecondaryIndexBuilder builder = new SecondaryIndexBuilder(baseCfs,
                                                                       Collections.singleton(getIndexName()),
                                                                       new ReducingKeyIterator(sstables));
-            Future<?> future = CompactionManager.instance.submitIndexBuild(builder);
-            FBUtilities.waitOnFuture(future);
+            Future<?> future = CompactionManager.instance.submitIndexBuild(builder);//wxc 2015-8-31:21:18:23 又是一个Future
+            FBUtilities.waitOnFuture(future);//wxc 2015-8-31:21:19:43 start一个线程后，又接着再waitOnFuture, 跟直接非线程地运行有什么区别？
             forceBlockingFlush();
             setIndexBuilt();
         }
@@ -249,7 +249,7 @@ public abstract class SecondaryIndex
         };
         FutureTask<?> f = new FutureTask<Object>(runnable, null);
 
-        new Thread(f, "Creating index: " + getIndexName()).start();
+        new Thread(f, "Creating index: " + getIndexName()).start();//wxc pro 2015-8-31:21:17:34 也可以这样用Future， 不错。
         return f;
     }
 

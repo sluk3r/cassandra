@@ -246,6 +246,7 @@ public class SecondaryIndexManager
         // since we want all columns to be under the index
         if (index instanceof PerRowSecondaryIndex)
         {
+            //wxc pro 2015-8-31:21:06:05 这个current代表什么逻辑？
             SecondaryIndex currentIndex = rowLevelIndexMap.get(index.getClass());
 
             if (currentIndex == null)
@@ -276,7 +277,7 @@ public class SecondaryIndexManager
         indexesByColumn.put(cdef.name.bytes, index);
 
         // Add to all indexes set:
-        allIndexes.add(index);
+        allIndexes.add(index);//wxc pro 2015-8-31:21:16:03 这个AllIndexes又代表着什么？
 
         // if we're just linking in the index to indexedColumns on an
         // already-built index post-restart, we're done

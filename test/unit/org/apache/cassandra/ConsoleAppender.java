@@ -24,7 +24,7 @@ import java.io.PrintStream;
 import ch.qos.logback.core.OutputStreamAppender;
 import ch.qos.logback.core.status.Status;
 import ch.qos.logback.core.status.WarnStatus;
-
+//wxc 2015-8-31:21:12:05 连这个也自己定义了一个。
 public class ConsoleAppender<E> extends OutputStreamAppender<E>
 {
     private String target = "System.out";

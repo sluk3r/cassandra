@@ -353,7 +353,7 @@ public class ColumnFamilyStore implements ColumnFamilyStoreMBean
         for (ColumnDefinition info : metadata.allColumns())
         {
             if (info.getIndexType() != null)
-                indexManager.addIndexedColumn(info);
+                indexManager.addIndexedColumn(info);//wxc 2015-8-31:21:21:43 并没有等这个Future执行完， 这样下次用时， 怎么会Future已经OK了。
         }
 
         if (registerBookkeeping)

@@ -54,6 +54,7 @@ import static org.apache.cassandra.utils.btree.BTree.Dir.desc;
  * other thread can see the state where only parts but not all rows have
  * been added.
  */
+//wxc 2015-8-31:20:50:23 看到BTree这个一直想研究的东西。 这里的BTree是怎么实现？
 public class AtomicBTreePartition implements Partition
 {
     private static final Logger logger = LoggerFactory.getLogger(AtomicBTreePartition.class);

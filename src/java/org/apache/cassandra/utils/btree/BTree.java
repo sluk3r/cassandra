@@ -32,7 +32,7 @@ import static com.google.common.collect.Iterables.transform;
 import static java.lang.Math.max;
 import static java.lang.Math.min;
 
-public class BTree
+public class BTree //wxc 2015-8-31:20:51:42 BTree放到Utils下面
 {
     /**
      * Leaf Nodes are a raw array of values: Object[V1, V1, ...,].

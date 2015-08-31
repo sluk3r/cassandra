@@ -526,7 +526,7 @@ public class BTreeBackedRow extends AbstractRow
                 cells.resolve(resolver);
             Object[] btree = cells.build();
             int minDeletionTime = minDeletionTime(btree, primaryKeyLivenessInfo, deletion);
-            Row row = new BTreeBackedRow(clustering, columns, primaryKeyLivenessInfo, deletion, btree, minDeletionTime);
+            Row row = new BTreeBackedRow(clustering, columns, primaryKeyLivenessInfo, deletion, btree, minDeletionTime); //wxc pro 2015-8-31:21:43:06 这个Row有意思。 背后怎么地隐藏着一个BTree？
             reset();
             return row;
         }
