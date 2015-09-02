@@ -271,7 +271,7 @@ public class SchemaLoader
 
     public static void createKeyspace(String name, KeyspaceParams params, CFMetaData... tables)
     {
-        MigrationManager.announceNewKeyspace(KeyspaceMetadata.create(name, params, Tables.of(tables)), true);
+        MigrationManager.announceNewKeyspace(KeyspaceMetadata.create(name, params, Tables.of(tables)), true); //wxc pro 2015-9-2:21:44:23 这里怎么叫MigrationManager？ 应该是远超Migration吧？
     }
 
     public static ColumnDefinition integerColumn(String ksName, String cfName)

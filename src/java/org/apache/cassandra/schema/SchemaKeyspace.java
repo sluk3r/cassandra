@@ -683,7 +683,7 @@ public final class SchemaKeyspace
 
     public static Mutation makeCreateKeyspaceMutation(KeyspaceMetadata keyspace, long timestamp)
     {
-        Mutation mutation = makeCreateKeyspaceMutation(keyspace.name, keyspace.params, timestamp);
+        Mutation mutation = makeCreateKeyspaceMutation(keyspace.name, keyspace.params, timestamp);//wxc 2015-9-2:21:46:01 Row里有一个Mutation， 这里又有一个。
 
         keyspace.tables.forEach(table -> addTableToSchemaMutation(table, timestamp, true, mutation));
         keyspace.types.forEach(type -> addTypeToSchemaMutation(type, timestamp, mutation));
