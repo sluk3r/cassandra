@@ -205,7 +205,7 @@ public final class SchemaKeyspace
     {
         return CFMetaData.compile(String.format(schema, name), NAME)
                          .comment(description)
-                         .gcGraceSeconds((int) TimeUnit.DAYS.toSeconds(7));
+                         .gcGraceSeconds((int) TimeUnit.DAYS.toSeconds(7));//wxc pro 2015-9-2:22:47:22 这里的Grace是什么意思？
     }
 
     public static KeyspaceMetadata metadata()
