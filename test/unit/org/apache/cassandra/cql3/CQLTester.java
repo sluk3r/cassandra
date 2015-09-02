@@ -156,7 +156,7 @@ public abstract class CQLTester
         {
             public void uncaughtException(Thread t, Throwable e)
             {
-                logger.error("Fatal exception in thread " + t, e);
+                logger.error("Fatal exception in thread " + t, e); //wxc pro 2015-9-2:20:05:38 这里会异常给吞掉转成日志？
             }
         });
 
@@ -170,10 +170,10 @@ public abstract class CQLTester
     {
         // We need to stop and unmap all CLS instances prior to cleanup() or we'll get failures on Windows.
         CommitLog.instance.stopUnsafe(true);
-        mkdirs();
+        mkdirs();//wxc pro 2015-9-2:20:02:56 cleanUp时怎么要再创建文件夹？
         cleanup();
-        mkdirs();
-        CommitLog.instance.startUnsafe();
+        mkdirs();//wxc pro 2015-9-2:20:03:42 又创建一次？ 逗闷子？
+        CommitLog.instance.startUnsafe();//wxc pro 2015-9-2:20:04:07 前面刚关掉， 这里就又开启了？
     }
 
     public static void cleanup()

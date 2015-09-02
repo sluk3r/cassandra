@@ -138,7 +138,7 @@ public final class ThreadAwareSecurityManager extends SecurityManager
 
     private static boolean isSecuredThread()
     {
-        return Thread.currentThread().getThreadGroup() instanceof SecurityThreadGroup;
+        return Thread.currentThread().getThreadGroup() instanceof SecurityThreadGroup;//wxc  2015-9-2:20:07:13 这个方法不错， 检查是不是有不应该出现的线程调用受保护的方法。
     }
 
     public void checkAccess(Thread t)

@@ -66,6 +66,7 @@ public class SchemaLoader
         Thread.sleep(10);
     }
 
+    //wxc 2015-9-2:19:59:14 当外面调用这个方法时， 上面的BeforeClass会不会再触发这个方法？
     public static void prepareServer()
     {
        CQLTester.prepareServer(false);
