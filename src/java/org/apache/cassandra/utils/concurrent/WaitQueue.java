@@ -67,7 +67,7 @@ import com.codahale.metrics.Timer;
  * <p>5. This scheme is not fair</p>
  * <p>6. Only the thread that calls register() may call await()</p>
  */
-public final class WaitQueue
+public final class WaitQueue //wxc 2015-9-5:8:25:47 等待队列， 这里边放的是什么？
 {
 
     private static final int CANCELLED = -1;

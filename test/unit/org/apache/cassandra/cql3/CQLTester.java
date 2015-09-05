@@ -169,7 +169,7 @@ public abstract class CQLTester
     public static void cleanupAndLeaveDirs() throws IOException
     {
         // We need to stop and unmap all CLS instances prior to cleanup() or we'll get failures on Windows.
-        CommitLog.instance.stopUnsafe(true);
+        CommitLog.instance.stopUnsafe(true); //wxc 2015-9-4:16:56:36 这里显示了另起线程的日志： [COMMIT-LOG-ALLOCATOR] WARN  org.apache.cassandra.utils.CLibrary
         mkdirs();//wxc pro 2015-9-2:20:02:56 cleanUp时怎么要再创建文件夹？
         cleanup();
         mkdirs();//wxc pro 2015-9-2:20:03:42 又创建一次？ 逗闷子？

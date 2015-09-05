@@ -64,7 +64,7 @@ public class CommitLogSegmentManager
     /**
      * Queue of work to be done by the manager thread, also used to wake the thread to perform segment allocation.
      */
-    private final BlockingQueue<Runnable> segmentManagementTasks = new LinkedBlockingQueue<>();
+    private final BlockingQueue<Runnable> segmentManagementTasks = new LinkedBlockingQueue<>(); //wxc pro 2015-9-4:18:24:39 这个Queue是谁往里放的？
 
     /** Segments that are ready to be used. Head of the queue is the one we allocate writes to */
     private final ConcurrentLinkedQueue<CommitLogSegment> availableSegments = new ConcurrentLinkedQueue<>();
@@ -108,12 +108,12 @@ public class CommitLogSegmentManager
         {
             public void runMayThrow() throws Exception
             {
-                while (run)
+                while (run) //wxc 2015-9-4:18:22:05 这样典型的使用方式， 这里也有。 volatile。 自己以后用时， 也不用妄自菲薄了。
                 {
                     try
                     {
-                        Runnable task = segmentManagementTasks.poll();
-                        if (task == null)
+                        Runnable task = segmentManagementTasks.poll();//wxc 2015-9-5:8:29:44 这个poll是普通队列的操作， 也就是还没有Blocking的特性。
+                        if (task == null) //wxc pro 2015-9-4:18:23:11 null的时候没有有跳过， 反而执行了很大的一块逻辑。
                         {
                             // if we have no more work to do, check if we should create a new segment
                             if (availableSegments.isEmpty() && (activeSegments.isEmpty() || createReserveSegments))
@@ -121,7 +121,7 @@ public class CommitLogSegmentManager
                                 logger.debug("No segments in reserve; creating a fresh one");
                                 // TODO : some error handling in case we fail to create a new segment
                                 availableSegments.add(CommitLogSegment.createSegment(commitLog));
-                                hasAvailableSegments.signalAll();
+                                hasAvailableSegments.signalAll();//wxc pro 2015-9-5:8:26:16 这个signalAll是要释放什么消息？
                             }
 
                             // flush old Cfs if we're full
@@ -139,13 +139,13 @@ public class CommitLogSegmentManager
                                     if (spaceToReclaim + unused >= 0)
                                         break;
                                 }
-                                flushDataFrom(segmentsToRecycle, false);
+                                flushDataFrom(segmentsToRecycle, false);//wxc pro 2015-9-5:8:28:09 这是从内存放到硬盘？
                             }
 
                             try
                             {
                                 // wait for new work to be provided
-                                task = segmentManagementTasks.take();
+                                task = segmentManagementTasks.take();//wxc pro 2015-9-5:8:31:03 take背后有同步协调的含义
                             }
                             catch (InterruptedException e)
                             {
@@ -153,7 +153,7 @@ public class CommitLogSegmentManager
                             }
                         }
 
-                        task.run();
+                        task.run();//wxc pro 2015-9-4:18:23:52 不会这个task里放的是Runnber接口的实例吧？ 从run方法看， 貌似。
                     }
                     catch (Throwable t)
                     {

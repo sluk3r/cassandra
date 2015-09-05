@@ -227,7 +227,7 @@ public class Schema
     {
         assert keyspaceName != null;
         KeyspaceMetadata ksm = keyspaces.get(keyspaceName);
-        return (ksm == null) ? null : ksm.tables.getNullable(cfName);
+        return (ksm == null) ? null : ksm.tables.getNullable(cfName);//wxc pro 2015-9-4:16:45:04 也就是说， 可以为空的。 刚开始想着会创建个新的。
     }
 
     /**
