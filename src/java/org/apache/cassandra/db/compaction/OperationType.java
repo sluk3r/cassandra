@@ -19,7 +19,7 @@ package org.apache.cassandra.db.compaction;
 
 public enum OperationType
 {
-    COMPACTION("Compaction"),
+    COMPACTION("Compaction"),//wxc 2015-9-5:21:47:51 顺便过下这些操作， 一般来说， 操作是封装起来的， 怎么这里只是孤零零地定义了枚举类？
     VALIDATION("Validation"),
     KEY_CACHE_SAVE("Key cache save"),
     ROW_CACHE_SAVE("Row cache save"),

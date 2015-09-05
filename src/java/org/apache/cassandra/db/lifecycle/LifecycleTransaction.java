@@ -349,7 +349,7 @@ public class LifecycleTransaction extends Transactional.AbstractTransactional
         assert original == originals.contains(reader) : String.format("the 'original' indicator was incorrect (%s provided): %s", original, reader);
         staged.update.add(reader);
         identities.add(reader.instanceId);
-        if (!isOffline())
+        if (!isOffline())//wxc pro 2015-9-5:21:58:01 离线表示什么？又出于什么转成在线的？
             reader.setupOnline();
     }
 

@@ -62,7 +62,7 @@ public class LifecycleTransactionTest extends AbstractTransactionalTest
     public void disableIncrementalBackup()
     {
         incrementalBackups = DatabaseDescriptor.isIncrementalBackupsEnabled();
-        DatabaseDescriptor.setIncrementalBackupsEnabled(false);
+        DatabaseDescriptor.setIncrementalBackupsEnabled(false);//wxc 2015-9-5:21:39:47 Static地改变某些值， 是有这个不好的地方。
     }
     @After
     public void restoreIncrementalBackup()
@@ -74,14 +74,14 @@ public class LifecycleTransactionTest extends AbstractTransactionalTest
     public void testUpdates() // (including obsoletion)　//wxc 2015-9-5:18:49:37 终于看到事务了，　下一环节重点参考的功能点。　
     {
         ColumnFamilyStore cfs = MockSchema.newCFS();
-        Tracker tracker = new Tracker(null, false);
+        Tracker tracker = new Tracker(null, false);//wxc pro 2015-9-5:21:41:25 Tracker在整个事务处理中是什么概念？刚看了下， 还不是为测试而专门设置的。
         SSTableReader[] readers = readersArray(0, 3, cfs);
         SSTableReader[] readers2 = readersArray(0, 4, cfs);
         SSTableReader[] readers3 = readersArray(0, 4, cfs);
-        tracker.addInitialSSTables(copyOf(readers));
-        LifecycleTransaction txn = tracker.tryModify(copyOf(readers), OperationType.UNKNOWN);
+        tracker.addInitialSSTables(copyOf(readers));//wxc pro 2015-9-5:21:44:22 又copy一次， 为啥？ 这个是Tracker是不是相当于Main方法？这样， 是不是在实际的使用中， 也是这样使用Tracker的？
+        LifecycleTransaction txn = tracker.tryModify(copyOf(readers), OperationType.UNKNOWN);//wxc pro 2015-9-5:21:46:13 前面添加了些初始化的Reader， 这里再用到相同的一组Reader， 何解？后面的OperationType也很有意思， 这里面定义了UNKNOW。
 
-        txn.update(readers2[0], true);
+        txn.update(readers2[0], true);//wxc pro 2015-9-5:21:52:22 一个事务对一个Reader做update操作，想表达什么？
         txn.obsolete(readers[1]);
 
         Assert.assertTrue(txn.isObsolete(readers[1]));

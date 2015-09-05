@@ -55,7 +55,7 @@ import org.apache.cassandra.utils.Pair;
  *
  * Finally, a bloom filter file is also kept for the keys in each SSTable.
  */
-public abstract class SSTable
+public abstract class SSTable //wxc pro 2015-9-5:21:55:18 两个S表示Sorted和SequencesFile？也就里SortedSequenceFile？
 {
     static final Logger logger = LoggerFactory.getLogger(SSTable.class);
 

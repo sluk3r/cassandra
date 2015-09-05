@@ -70,7 +70,7 @@ public class Tracker
     public Tracker(ColumnFamilyStore cfstore, boolean loadsstables)
     {
         this.cfstore = cfstore;
-        this.view = new AtomicReference<>();
+        this.view = new AtomicReference<>();//wxc 2015-9-5:21:42:29  也是第一次见这个使用方式。
         this.loadsstables = loadsstables;
         this.reset();
     }
@@ -86,7 +86,7 @@ public class Tracker
     public LifecycleTransaction tryModify(Iterable<SSTableReader> sstables, OperationType operationType)
     {
         if (Iterables.isEmpty(sstables))
-            return new LifecycleTransaction(this, operationType, sstables);
+            return new LifecycleTransaction(this, operationType, sstables);//wxc pro 2015-9-5:21:51:03 当是空时， 也返回一个是实例是啥子意思？
         if (null == apply(permitCompacting(sstables), updateCompacting(emptySet(), sstables)))
             return null;
         return new LifecycleTransaction(this, operationType, sstables);
