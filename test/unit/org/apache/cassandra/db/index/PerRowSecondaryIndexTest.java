@@ -1,4 +1,4 @@
-/*
+ï»¿/*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
  * distributed with this work for additional information
@@ -62,11 +62,11 @@ public class PerRowSecondaryIndexTest
 
     @BeforeClass
     public static void defineSchema() throws ConfigurationException
-    {//wxc 2015-8-19:12:50:33 Õâ¸öÊÇ²»ÊÇ·Åµ½¸¸ÀàÀïºÃÒ»Ğ©£¿
+    {//wxc 2015-8-19:12:50:33 è¿™ä¸ªæ˜¯ä¸æ˜¯æ”¾åˆ°çˆ¶ç±»é‡Œå¥½ä¸€äº›ï¼Ÿ
         SchemaLoader.prepareServer();
         SchemaLoader.createKeyspace(KEYSPACE1,
                                     KeyspaceParams.simple(1),
-                                    //wxc 2015-8-31:21:00:59 perRowIndexedCFMD ·½·¨Àï°Ñ×Ô¶¨ÒåµÄIndexÀàÉèÖÃ½øÈ¥£¬ ÔÙ·´ÉäµØ´´½¨³öÀ´¡£ ÕâÖÖ·½·¨²»´í¡£
+                                    //wxc 2015-8-31:21:00:59 perRowIndexedCFMD æ–¹æ³•é‡ŒæŠŠè‡ªå®šä¹‰çš„Indexç±»è®¾ç½®è¿›å»ï¼Œ å†åå°„åœ°åˆ›å»ºå‡ºæ¥ã€‚ è¿™ç§æ–¹æ³•ä¸é”™ã€‚
                                     SchemaLoader.perRowIndexedCFMD(KEYSPACE1, CF_INDEXED));
     }
 
@@ -79,18 +79,18 @@ public class PerRowSecondaryIndexTest
     @Test
     public void testIndexInsertAndUpdate()
     {
-        int nowInSec = FBUtilities.nowInSeconds();//wxc pro 2015-8-19:12:53:32 Ïàµ±ÓÚÊ±¼ä´Á£¿
+        int nowInSec = FBUtilities.nowInSeconds();//wxc pro 2015-8-19:12:53:32 ç›¸å½“äºæ—¶é—´æˆ³ï¼Ÿ
 
         // create a row then test that the configured index instance was able to read the row
         CFMetaData cfm = Schema.instance.getCFMetaData(KEYSPACE1, CF_INDEXED);
         ColumnDefinition cdef = cfm.getColumnDefinition(new ColumnIdentifier("indexed", true));
 
-        RowUpdateBuilder builder = new RowUpdateBuilder(cfm, FBUtilities.timestampMicros(), "k1");//wxc 2015-8-31:21:30:31 Ã²ËÆcfmÊÇ´æ´¢Àï×îºËĞÄµÄ¶«Î÷¡£
-        builder.add("indexed", ByteBufferUtil.bytes("foo"));//wxc 2015-8-31:21:36:47 Ç°ÃæµÄColumnDefinitionÒÑ¾­¶¨ÒåºÃÁË¡£
-        builder.build().apply();//wxc pro 2015-8-19:12:58:56 applyÖĞÊÇ²»ÊÇÓĞÊÂ¼ş²úÉú£¿
+        RowUpdateBuilder builder = new RowUpdateBuilder(cfm, FBUtilities.timestampMicros(), "k1");//wxc 2015-8-31:21:30:31 è²Œä¼¼cfmæ˜¯å­˜å‚¨é‡Œæœ€æ ¸å¿ƒçš„ä¸œè¥¿ã€‚
+        builder.add("indexed", ByteBufferUtil.bytes("foo"));//wxc 2015-8-31:21:36:47 å‰é¢çš„ColumnDefinitionå·²ç»å®šä¹‰å¥½äº†ã€‚
+        builder.build().apply();//wxc pro 2015-8-19:12:58:56 applyä¸­æ˜¯ä¸æ˜¯æœ‰äº‹ä»¶äº§ç”Ÿï¼Ÿ
 
 
-        //wxc 2015-8-31:20:37:35 ÕâÖÖ·½Ê½²»´í£º ÔÚ±Ø¾­Ö®Â·ÉÏÉèÖÃÒ»¸öÈ¡±äÁ¿µÄµØ·½¡£
+        //wxc 2015-8-31:20:37:35 è¿™ç§æ–¹å¼ä¸é”™ï¼š åœ¨å¿…ç»ä¹‹è·¯ä¸Šè®¾ç½®ä¸€ä¸ªå–å˜é‡çš„åœ°æ–¹ã€‚
         UnfilteredRowIterator indexedRow = PerRowSecondaryIndexTest.TestIndex.LAST_INDEXED_PARTITION;
         assertNotNull(indexedRow);
         assertEquals(ByteBufferUtil.bytes("foo"), UnfilteredRowIterators.filter(indexedRow, nowInSec).next().getCell(cdef).value());
@@ -103,7 +103,7 @@ public class PerRowSecondaryIndexTest
         indexedRow = PerRowSecondaryIndexTest.TestIndex.LAST_INDEXED_PARTITION;
         assertNotNull(indexedRow);
         assertEquals(ByteBufferUtil.bytes("bar"), UnfilteredRowIterators.filter(indexedRow, nowInSec).next().getCell(cdef).value());
-        assertTrue(Arrays.equals("k1".getBytes(), PerRowSecondaryIndexTest.TestIndex.LAST_INDEXED_KEY.array()));
+        assertTrue(Arrays.equals("k1".getBytes(), PerRowSecondaryIndexTest.TestIndex.LAST_INDEXED_KEY.array()));//wxc pro 2015-9-5:18:21:15  è¿™ä¸ªæµ‹è¯•è¯´æ˜äº†ä»€ä¹ˆï¼Ÿ
     }
 
     @Test
@@ -123,7 +123,7 @@ public class PerRowSecondaryIndexTest
 
         //We filter tombstones now...
         Assert.assertFalse(UnfilteredRowIterators.filter(indexedRow, FBUtilities.nowInSeconds()).hasNext());
-        assertTrue(Arrays.equals("k2".getBytes(), PerRowSecondaryIndexTest.TestIndex.LAST_INDEXED_KEY.array()));
+        assertTrue(Arrays.equals("k2".getBytes(), PerRowSecondaryIndexTest.TestIndex.LAST_INDEXED_KEY.array()));//wxc pro 2015-9-5:18:22:48 è¿™ä¸ªCaseåœ¨deleteæ—¶è¯´æ˜äº†ä»€ä¹ˆï¼Ÿ
     }
 
     @Test
@@ -131,7 +131,7 @@ public class PerRowSecondaryIndexTest
     {
         // issue a row level delete and test that the configured index instance was notified to update
         CFMetaData cfm = Schema.instance.getCFMetaData(KEYSPACE1, CF_INDEXED);
-        RowUpdateBuilder.deleteRow(cfm, FBUtilities.timestampMicros(), "k3").apply();
+        RowUpdateBuilder.deleteRow(cfm, FBUtilities.timestampMicros(), "k3").apply();//wxc 2015-9-5:18:23:40 delete rowæ—¶ï¼Œ ç‰¹æ„å°è£…äº†ä¸€ä¸ªæ–¹æ³•ã€‚ ç•™æ„ä¸‹ã€‚
 
         UnfilteredRowIterator indexedRow = PerRowSecondaryIndexTest.TestIndex.LAST_INDEXED_PARTITION;
         assertNotNull(indexedRow);
@@ -167,7 +167,7 @@ public class PerRowSecondaryIndexTest
         }
     }
 
-    //wxc pro 2015-8-31:20:44:07 Ò»¸öÎÊÌâ£º Õâ¸öTestIndexÊÇÊ²Ã´Ê±ºò×¢Èëµ½ÕûÌå»úÖÆÀïµÄ£¿
+    //wxc pro 2015-8-31:20:44:07 ä¸€ä¸ªé—®é¢˜ï¼š è¿™ä¸ªTestIndexæ˜¯ä»€ä¹ˆæ—¶å€™æ³¨å…¥åˆ°æ•´ä½“æœºåˆ¶é‡Œçš„ï¼Ÿ
     public static class TestIndex extends PerRowSecondaryIndex
     {
         public static UnfilteredRowIterator LAST_INDEXED_PARTITION;

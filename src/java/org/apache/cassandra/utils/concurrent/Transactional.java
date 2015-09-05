@@ -59,7 +59,7 @@ public interface Transactional extends AutoCloseable
      * If the implementation wraps any internal Transactional objects, it must proxy every
      * commit() and abort() call onto each internal object to ensure correct behaviour
      */
-    abstract class AbstractTransactional implements Transactional
+    abstract class AbstractTransactional implements Transactional //wxc 2015-9-5:18:40:58 这种方式很简洁： 直接在一个接口里， 再定义一个实现接口的抽象类。
     {
         public enum State
         {

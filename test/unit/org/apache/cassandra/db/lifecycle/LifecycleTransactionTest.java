@@ -71,7 +71,7 @@ public class LifecycleTransactionTest extends AbstractTransactionalTest
     }
 
     @Test
-    public void testUpdates() // (including obsoletion)
+    public void testUpdates() // (including obsoletion)　//wxc 2015-9-5:18:49:37 终于看到事务了，　下一环节重点参考的功能点。　
     {
         ColumnFamilyStore cfs = MockSchema.newCFS();
         Tracker tracker = new Tracker(null, false);

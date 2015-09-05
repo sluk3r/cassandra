@@ -50,7 +50,7 @@ public class HelpersTest
     @BeforeClass
     public static void setUp()
     {
-        MockSchema.cleanup();
+        MockSchema.cleanup(); //wxc 2015-9-5:18:38:34 当前的是一个工具类， 执行这个句话没有什么用。
     }
 
     static Set<Integer> a = set(1, 2, 3);

@@ -17,7 +17,7 @@
  */
 package org.apache.cassandra.utils.concurrent;
 
-import sun.misc.Unsafe;
+import sun.misc.Unsafe;//wxc 2015-9-5:18:43:13 用了这个， 是不是就只能用Sun的JVM了？
 
 import java.lang.reflect.Field;
 

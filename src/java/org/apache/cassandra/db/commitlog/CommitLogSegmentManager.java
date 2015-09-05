@@ -104,7 +104,7 @@ public class CommitLogSegmentManager
     private void start()
     {
         // The run loop for the manager thread
-        Runnable runnable = new WrappedRunnable()
+        Runnable runnable = new WrappedRunnable()//wxc pro 2015-9-5:18:12:39  借鉴这样的Runnable方式， 不错。
         {
             public void runMayThrow() throws Exception
             {
