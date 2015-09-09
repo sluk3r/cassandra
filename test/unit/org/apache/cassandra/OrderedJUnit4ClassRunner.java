@@ -44,7 +44,7 @@ public class OrderedJUnit4ClassRunner extends BlockJUnit4ClassRunner
         try
         {
             final List<FrameworkMethod> copy = new ArrayList<FrameworkMethod>(list);
-            Collections.sort(copy, MethodComparator.getFrameworkMethodComparatorForJUnit4());
+            Collections.sort(copy, MethodComparator.getFrameworkMethodComparatorForJUnit4());//wxc pro 2015-9-9:21:09:37 这里再指定一个新的Comparator有什么意图？
             return copy;
         }
         catch (Throwable throwable)

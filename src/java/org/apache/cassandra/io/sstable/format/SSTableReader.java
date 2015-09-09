@@ -124,7 +124,7 @@ import static org.apache.cassandra.db.Directories.SECONDARY_INDEX_NAME_SEPARATOR
  *
  * TODO: fill in details about Tracker and lifecycle interactions for tools, and for compaction strategies
  */
-public abstract class SSTableReader extends SSTable implements SelfRefCounted<SSTableReader>
+public abstract class SSTableReader extends SSTable implements SelfRefCounted<SSTableReader> //wxc pro 2015-9-9:20:59:00  SSTableReader继承了SSTable？一个操作类继承了Table
 {
     private static final Logger logger = LoggerFactory.getLogger(SSTableReader.class);
 

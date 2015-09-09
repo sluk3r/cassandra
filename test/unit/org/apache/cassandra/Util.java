@@ -313,7 +313,7 @@ public class Util
         return results;
     }
 
-    public static List<FilteredPartition> getAll(ReadCommand command)
+    public static List<FilteredPartition> getAll(ReadCommand command) //wxc pro 2015-9-9:21:49:09 像getAll这样跟业务很核心的逻辑也放到Static里， 是不是有些设计不足？
     {
         List<FilteredPartition> results = new ArrayList<>();
         try (ReadOrderGroup orderGroup = command.startOrderGroup(); PartitionIterator iterator = command.executeInternal(orderGroup))

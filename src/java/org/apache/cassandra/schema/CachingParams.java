@@ -49,7 +49,7 @@ public final class CachingParams
     static final boolean DEFAULT_CACHE_KEYS = true;
     static final int DEFAULT_ROWS_PER_PARTITION_TO_CACHE = 0;
 
-    public static final CachingParams CACHE_NOTHING = new CachingParams(false, 0);
+    public static final CachingParams CACHE_NOTHING = new CachingParams(false, 0);//wxc 2015-9-9:21:11:58 策略模式的体现？
     public static final CachingParams CACHE_KEYS = new CachingParams(true, 0);
     public static final CachingParams CACHE_EVERYTHING = new CachingParams(true, Integer.MAX_VALUE);
 

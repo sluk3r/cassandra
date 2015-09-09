@@ -31,7 +31,7 @@ import org.apache.cassandra.service.pager.PagingState;
  * {@link SinglePartitionReadCommand.Group} is also consider as a "read query" but is not a
  * {@code ReadCommand}.
  */
-public interface ReadQuery
+public interface ReadQuery  //wxc pro 2015-9-9:21:51:31 这个ReadQuery跟前面的SSTableReader的关系？ 是不是ReadQuery是高一层次上的， 而SSTableReader是IO层面上的？
 {
     public static final ReadQuery EMPTY = new ReadQuery()
     {

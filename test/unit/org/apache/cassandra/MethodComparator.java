@@ -35,7 +35,7 @@ public class MethodComparator<T> implements Comparator<T>
 {
     private static final char[] METHOD_SEPARATORS = {1, 7};
 
-    private MethodComparator()
+    private MethodComparator() //wxc 2015-9-9:21:08:43 貌似动不动就用Private的修饰， 这样是有什么考虑？
     {
     }
 

@@ -67,7 +67,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.apache.cassandra.utils.ByteBufferUtil.bytes;
 
-@RunWith(OrderedJUnit4ClassRunner.class)
+@RunWith(OrderedJUnit4ClassRunner.class) //wxc 2015-9-9:21:10:09 第一次见用自定义的Runner。
 public class SSTableReaderTest
 {
     public static final String KEYSPACE1 = "SSTableReaderTest";
@@ -99,26 +99,26 @@ public class SSTableReaderTest
     }
 
     @Test
-    public void testGetPositionsForRanges()
+    public void testGetPositionsForRanges() //wxc pro 2015-9-9:21:21:58 Reader与Range和Postions有什么关系？ 先不往下细究了， 打个照面先。
     {
-        Keyspace keyspace = Keyspace.open(KEYSPACE1);
+        Keyspace keyspace = Keyspace.open(KEYSPACE1);//wxc 2015-9-9:21:13:26 第一次见Keyspace的使用。
         ColumnFamilyStore store = keyspace.getColumnFamilyStore("Standard2");
         partitioner = store.getPartitioner();
 
         // insert data and compact to a single sstable
-        CompactionManager.instance.disableAutoCompaction();
+        CompactionManager.instance.disableAutoCompaction();//wxc 2015-9-9:21:14:27 看的越来越多， 慢慢地也就习惯了这样的写法。而不是简单地用static
         for (int j = 0; j < 10; j++)
         {
-            new RowUpdateBuilder(store.metadata, j, String.valueOf(j))
+            new RowUpdateBuilder(store.metadata, j, String.valueOf(j)) //wxc 2015-9-9:21:15:37 这种方式来达到数据更新的目的。 不过这样也就依赖了RowUpdateBuilder， 测试显得不够独立。
                 .clustering("0")
                 .add("val", ByteBufferUtil.EMPTY_BYTE_BUFFER)
                 .build()
-                .applyUnsafe();
+                .applyUnsafe(); //wxc 2015-9-9:21:17:01 这里Unsafe的体现是没有writeCommitLog。
         }
-        store.forceBlockingFlush();
-        CompactionManager.instance.performMaximal(store, false);
+        store.forceBlockingFlush();//wxc 2015-9-9:21:17:22 用这句话可看到数据往硬盘的落地。  由这个想到了SSTableWriter， 也想到了SSTableWriterTest。 不过没有看到SSTableWriterTest类。
+        CompactionManager.instance.performMaximal(store, false);//wxc pro 2015-9-9:21:19:30 前面禁掉自动压缩，这里再手动压缩的目的是？
 
-        List<Range<Token>> ranges = new ArrayList<Range<Token>>();
+        List<Range<Token>> ranges = new ArrayList<Range<Token>>(); //wxc pro 2015-9-9:21:20:54 Range能理解， Token的意思是？
         // 1 key
         ranges.add(new Range<>(t(0), t(1)));
         // 2 keys
@@ -131,7 +131,7 @@ public class SSTableReaderTest
         // confirm that positions increase continuously
         SSTableReader sstable = store.getLiveSSTables().iterator().next();
         long previous = -1;
-        for (Pair<Long,Long> section : sstable.getPositionsForRanges(ranges))
+        for (Pair<Long,Long> section : sstable.getPositionsForRanges(ranges)) //wxc pro 2015-9-9:21:27:09 从getPositionsForRanges方法的Doc来看，像是Lucene的Step。 先不细究
         {
             assert previous <= section.left : previous + " ! < " + section.left;
             assert section.left < section.right : section.left + " ! < " + section.right;
@@ -140,7 +140,7 @@ public class SSTableReaderTest
     }
 
     @Test
-    public void testSpannedIndexPositions() throws IOException
+    public void testSpannedIndexPositions() throws IOException //wxc pro 2015-9-9:21:42:12 这个Position方面的测试跟testGetPositionsForRanges有什么关联？
     {
         MmappedSegmentedFile.MAX_SEGMENT_SIZE = 40; // each index entry is ~11 bytes, so this will generate lots of segments
 
@@ -162,17 +162,18 @@ public class SSTableReaderTest
         CompactionManager.instance.performMaximal(store, false);
 
         // check that all our keys are found correctly
-        SSTableReader sstable = store.getLiveSSTables().iterator().next();
+        SSTableReader sstable = store.getLiveSSTables().iterator().next(); //wxc 2015-9-9:21:29:39 取SSTableReader的方式也有些怪怪的。另一方面， 类是Reader， 实例名却起了个table，不理解。
         for (int j = 0; j < 100; j += 2)
         {
-            DecoratedKey dk = Util.dk(String.valueOf(j));
-            FileDataInput file = sstable.getFileDataInput(sstable.getPosition(dk, SSTableReader.Operator.EQ).position);
+            DecoratedKey dk = Util.dk(String.valueOf(j)); //wxc pro 2015-9-9:21:30:04 怎么个Decorate方式？看了下， 有四个实现类： BufferDecorated, CachedHashDecoratedKey, NativeDecoratedKey, PreHashedDecoratedKey
+            FileDataInput file = sstable.getFileDataInput(sstable.getPosition(dk, SSTableReader.Operator.EQ).position); //wxc 2015-9-9:21:37:35 EQ这样的定义是在Reader里边， 感觉更应该放到Query相关的包里， 是不是没有有Query相关的包？
             DecoratedKey keyInDisk = sstable.decorateKey(ByteBufferUtil.readWithShortLength(file));
-            assert keyInDisk.equals(dk) : String.format("%s != %s in %s", keyInDisk, dk, file.getPath());
+            assert keyInDisk.equals(dk) : String.format("%s != %s in %s", keyInDisk, dk, file.getPath()); //wxc pro 2015-9-9:21:39:03 这样只用assert跟Asserts框架的里的方法有什么不同？
+            //wxc 2015-9-9:21:40:03 上面的比较貌似是这样的逻辑： 按一定规则生成的DKey和实际文件对应的DKey是不是一样。
         }
 
         // check no false positives
-        for (int j = 1; j < 110; j += 2)
+        for (int j = 1; j < 110; j += 2) //wxc 2015-9-9:21:41:22 这种方式不错： j起点跟上面的不一样， 这样就造成了错开。
         {
             DecoratedKey dk = Util.dk(String.valueOf(j));
             assert sstable.getPosition(dk, SSTableReader.Operator.EQ) == null;
@@ -234,7 +235,7 @@ public class SSTableReaderTest
         assertEquals(1, sstable.getReadMeter().count());
 
         Util.getAll(Util.cmd(store, key).includeRow("0").build());
-        assertEquals(2, sstable.getReadMeter().count());
+        assertEquals(2, sstable.getReadMeter().count()); //wxc pro 2015-9-9:21:53:00 从功能设计上来看， 这样的ReadMeter有什么特殊考虑？
     }
 
     @Test
