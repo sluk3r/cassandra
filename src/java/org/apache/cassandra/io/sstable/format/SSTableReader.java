@@ -582,7 +582,7 @@ public abstract class SSTableReader extends SSTable implements SelfRefCounted<SS
                                             OpenReason openReason,
                                             SerializationHeader header)
     {
-        Factory readerFactory = descriptor.getFormat().getReaderFactory();
+        Factory readerFactory = descriptor.getFormat().getReaderFactory();//wxc pro 2015-9-15:21:40:52 这里的一个问题是： descriptor跟Format之间的关系。
 
         return readerFactory.open(descriptor, components, metadata, maxDataAge, sstableMetadata, openReason, header);
     }

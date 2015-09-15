@@ -41,7 +41,7 @@ public interface SSTableFormat
     Version getVersion(String version);
 
     SSTableWriter.Factory getWriterFactory();
-    SSTableReader.Factory getReaderFactory();
+    SSTableReader.Factory getReaderFactory();//wxc 2015-9-15:21:39:17 Factory的Factory， 这样一串下去。
 
     RowIndexEntry.IndexSerializer<?> getIndexSerializer(CFMetaData cfm, Version version, SerializationHeader header);
 
