@@ -77,7 +77,7 @@ import org.apache.cassandra.utils.*;
 1, 找到Main方法了。
 2. 以后可以从这开始往下再搞。
  */
-public class CassandraDaemon
+public class CassandraDaemon //wxc 2015-9-14:16:44:49 Main方法放到Daemon类里很合适。
 {
     public static final String MBEAN_NAME = "org.apache.cassandra.db:type=NativeAccess";//wxc 2015-8-7:12:54:44  JMX埋点
     private static JMXConnectorServer jmxServer = null;//wxc 2015-8-7:12:59:54 这个类第一次见。
