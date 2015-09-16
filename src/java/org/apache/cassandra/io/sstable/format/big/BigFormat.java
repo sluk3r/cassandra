@@ -93,7 +93,7 @@ public class BigFormat implements SSTableFormat
         }
     }
 
-    static class ReaderFactory extends SSTableReader.Factory
+    static class ReaderFactory extends SSTableReader.Factory //wxc 2015-9-15:21:35:27 典型的工厂方法嘛。有这个工厂方法后， 看代码的幸福值猛增
     {
         @Override
         public SSTableReader open(Descriptor descriptor, Set<Component> components, CFMetaData metadata, Long maxDataAge, StatsMetadata sstableMetadata, SSTableReader.OpenReason openReason, SerializationHeader header)

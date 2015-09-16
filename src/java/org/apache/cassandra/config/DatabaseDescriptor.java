@@ -77,7 +77,7 @@ public class DatabaseDescriptor
 
     private static Config conf;
 
-    private static SSTableFormat.Type sstable_format = SSTableFormat.Type.BIG;
+    private static SSTableFormat.Type sstable_format = SSTableFormat.Type.BIG;//wxc 2015-9-15:21:42:46  这个是写死的， 没有动态地设置。 意义在哪里？
 
     private static IAuthenticator authenticator = new AllowAllAuthenticator();
     private static IAuthorizer authorizer = new AllowAllAuthorizer();
