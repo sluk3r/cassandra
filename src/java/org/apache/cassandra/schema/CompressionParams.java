@@ -259,7 +259,7 @@ public final class CompressionParams
 
         try
         {
-            Method method = compressorClass.getMethod("create", Map.class);
+            Method method = compressorClass.getMethod("create", Map.class);//wxc 2015-9-27:22:01:44 这种静态工厂为壳， 再在里面用反射调用生成， 效果应该不错。 不过， 貌似可以用工厂方法来实现。 或者说工厂方法不能解决这里的什么问题？
             ICompressor compressor = (ICompressor)method.invoke(null, compressionOptions);
             // Check for unknown options
             AbstractSet<String> supportedOpts = Sets.union(compressor.supportedOptions(), GLOBAL_OPTIONS);

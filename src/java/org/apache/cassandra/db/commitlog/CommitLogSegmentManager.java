@@ -91,7 +91,7 @@ public class CommitLogSegmentManager
      */
     volatile boolean createReserveSegments = false;
 
-    private Thread managerThread;
+    private Thread managerThread; //wxc pro 2015-9-27:22:16:37 有自己的管理线程， 不过， 这个线程执行的结果， 怎么通知给调用者？
     private volatile boolean run = true;
     private final CommitLog commitLog;
 

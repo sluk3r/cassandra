@@ -50,7 +50,7 @@
   <appender name="LogbackMetrics" class="com.codahale.metrics.logback.InstrumentedAppender" />
    -->
 
-  <root level="DEBUG">
+  <root level="INFO">
     <appender-ref ref="FILE" />
     <appender-ref ref="STDOUT" />
     <!--

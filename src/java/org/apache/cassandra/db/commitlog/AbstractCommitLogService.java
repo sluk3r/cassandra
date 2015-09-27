@@ -157,7 +157,7 @@ public abstract class AbstractCommitLogService
             }
         };
 
-        thread = new Thread(runnable, name);
+        thread = new Thread(runnable, name);//wxc pro 2015-9-27:22:17:38 也是手动启动的线程， 如果这个线程死了怎样办？ 如在执行某一个方法时没有能很好地catch异常， 是不是ExecutorService里是通过再造线程方式解决这个问题的？
         thread.start();
     }
 

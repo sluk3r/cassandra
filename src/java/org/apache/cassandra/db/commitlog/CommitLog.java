@@ -98,11 +98,11 @@ public class CommitLog implements CommitLogMBean
 
         this.compressor = compressor;
         this.archiver = archiver;
-        metrics = new CommitLogMetrics();
+        metrics = new CommitLogMetrics();//wxc pro 2015-9-27:22:13:03 è¿™ä¸ªMetricsèƒ½ä¸èƒ½ç”¨åˆ°ç°åœ¨è‡ªå·±çš„å·¥ç¨‹ä¸­å»ï¼Ÿ æ€ä¹ˆç”¨ï¼Ÿæœ‰ä»€ä¹ˆå¥½å¤„å¯ä»¥è¯´åŠ¨å†³ç­–è€…ï¼Ÿ
 
         executor = DatabaseDescriptor.getCommitLogSync() == Config.CommitLogSync.batch
                 ? new BatchCommitLogService(this)
-                : new PeriodicCommitLogService(this);
+                : new PeriodicCommitLogService(this); //wxc 2015-9-27:22:15:25 æ‰¹é‡å’Œå®šæœŸå¹¶ä¸å¯¹ç­‰å§ï¼Ÿ
 
         allocator = new CommitLogSegmentManager(this);
         executor.start();
@@ -255,7 +255,7 @@ public class CommitLog implements CommitLogMBean
                                                              totalSize, MAX_MUTATION_SIZE));
         }
 
-        Allocation alloc = allocator.allocate(mutation, (int) totalSize);//wxc pro 2015-8-19:13:13:43 »¹ÓĞÏñCÖĞÄÇÑùµÄAllocation£¿
+        Allocation alloc = allocator.allocate(mutation, (int) totalSize);//wxc pro 2015-8-19:13:13:43 ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Cï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Allocationï¿½ï¿½
         CRC32 checksum = new CRC32();
         final ByteBuffer buffer = alloc.getBuffer();
         try (BufferedDataOutputStreamPlus dos = new DataOutputBufferFixed(buffer))
@@ -397,7 +397,7 @@ public class CommitLog implements CommitLogMBean
     /**
      * Shuts down the threads used by the commit log, blocking until completion.
      */
-    //wxc 2015-8-16:21:33:03 commitLogÀïÓĞ×Ô¼ºµÄÏß³Ì¡£ ¶¼×öÁËÊ²Ã´£¿
+    //wxc 2015-8-16:21:33:03 commitLogï¿½ï¿½ï¿½ï¿½ï¿½Ô¼ï¿½ï¿½ï¿½ï¿½ß³Ì¡ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê²Ã´ï¿½ï¿½
     public void shutdownBlocking() throws InterruptedException
     {
         executor.shutdown();

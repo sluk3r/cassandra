@@ -535,7 +535,7 @@ public class ColumnFamilyStore implements ColumnFamilyStoreMBean
 
         // cleanup incomplete saved caches
         Pattern tmpCacheFilePattern = Pattern.compile(metadata.ksName + "-" + metadata.cfName + "-(Key|Row)Cache.*\\.tmp$");
-        File dir = new File(DatabaseDescriptor.getSavedCachesLocation());
+        File dir = new File(DatabaseDescriptor.getSavedCachesLocation()); //wxc 2015-9-27:22:10:08 大概看了下， 每次都是从String内容里现生成一个File对象，这样的优缺点？
 
         if (dir.exists())
         {
