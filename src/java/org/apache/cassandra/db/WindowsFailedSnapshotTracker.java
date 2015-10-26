@@ -44,7 +44,7 @@ public class WindowsFailedSnapshotTracker
     // Need to handle null for unit tests
     public static final String TODELETEFILE = System.getenv("CASSANDRA_HOME") == null
                  ? ".toDelete"
-                 : System.getenv("CASSANDRA_HOME") + File.separator + ".toDelete";
+                 : System.getenv("CASSANDRA_HOME") + File.separator + ".toDelete";//wxc pro 2015-9-16:9:21:49 看了下， 这个TODELETEFILE只是在当前类和对应的测试类里用到。 并没有其它的地方。
 
     public static void deleteOldSnapshots()
     {

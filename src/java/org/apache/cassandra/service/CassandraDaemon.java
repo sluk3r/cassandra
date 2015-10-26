@@ -152,10 +152,11 @@ public class CassandraDaemon //wxc 2015-9-14:16:44:49 Main方法放到Daemon类�
      *
      * Subclasses should override this to finish the job (listening on ports, etc.)
      */
+    //wxc 2015-9-16:9:03:20 看这里的描述， 对override有了形象的理解：所谓override， 就在骑在别人的马背上。 直接使用，这样最终在细胞层面上区分出Overwrite。overwrite的字面意思几乎是推倒重来。
     protected void setup()
     {
         // Delete any failed snapshot deletions on Windows - see CASSANDRA-9658
-        if (FBUtilities.isWindows()) //wxc 2015-8-15:21:37:22 什么东西只有Windows下才有？ 另外是不是对Windows的判断是不是可以优雅些？
+        if (FBUtilities.isWindows()) //wxc 2015-8-15:21:37:22 什么东西只有Windows下才有？ 另外是不是对Windows的判断是不是可以优雅些？ //wxc 2015-9-16:9:09:47 回看前个时间点的注释：没有整体业务性，而只是“挑刺”。现在回到业务的上正道上来后， 再看，这不是个问题。
             WindowsFailedSnapshotTracker.deleteOldSnapshots();
 
         ThreadAwareSecurityManager.install();//wxc pro 2015-8-7:13:15:26 这个类ThreadAwareSecurityManager能搞啥？
@@ -170,7 +171,7 @@ public class CassandraDaemon //wxc 2015-9-14:16:44:49 Main方法放到Daemon类�
         }
         catch (StartupException e)
         {
-            exitOrFail(e.returnCode, e.getMessage(), e.getCause());
+            exitOrFail(e.returnCode, e.getMessage(), e.getCause()); //wxc 2015-9-16:9:12:15 看到returnCode的定义， 考虑太细致了， 也
         }
 
         try
