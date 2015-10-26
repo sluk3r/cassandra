@@ -78,7 +78,7 @@ public class DebuggableScheduledThreadPoolExecutorTest
         }, 10, TimeUnit.SECONDS);
 
 
-        StorageService.instance.drain();
+        StorageService.instance.drain();//wxc pro 2015-10-26:22:41:00 这怎么实然冒出一个这么一句话。何意？
         testPool.shutdown();
 
         future.get();

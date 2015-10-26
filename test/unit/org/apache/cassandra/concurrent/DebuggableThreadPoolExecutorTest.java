@@ -56,5 +56,6 @@ public class DebuggableThreadPoolExecutorTest
             continue;
         long delta = TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - start);
         assert delta >= 9 * 50 : delta;
+        //wxc pro 2015-10-26:22:16:07 这个测试用例没有体现出来Debuggable的语义吧。
     }
 }
