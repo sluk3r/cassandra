@@ -498,8 +498,8 @@ public class CassandraDaemon //wxc 2015-9-14:16:44:49 Main方法放到Daemon类�
         {
             try
             {
-                MBeanServer mbs = ManagementFactory.getPlatformMBeanServer();
-                mbs.registerMBean(new StandardMBean(new NativeAccess(), NativeAccessMBean.class), new ObjectName(MBEAN_NAME));
+                MBeanServer mbs = ManagementFactory.getPlatformMBeanServer(); //wxc pro 2015-12-9:20:59:07 这种方式启动JMX相关服务？
+                mbs.registerMBean(new StandardMBean(new NativeAccess(), NativeAccessMBean.class), new ObjectName(MBEAN_NAME));//wxc pro 2015-12-9:21:02:27 这样注册后， 后续怎么个用法？
             }
             catch (Exception e)
             {

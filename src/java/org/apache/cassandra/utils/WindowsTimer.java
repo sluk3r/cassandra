@@ -32,7 +32,7 @@ public final class WindowsTimer
     {
         try
         {
-            Native.register("winmm");
+            Native.register("winmm");//wxc pro 2015-12-9:20:55:58 这个Native类是sunJDK的， 这样是否意味着只运行在Sun的JDK上？ 放下这个问题， 看到加载ddl的方式。
         }
         catch (Exception e)
         {
@@ -40,7 +40,7 @@ public final class WindowsTimer
         }
     }
 
-    private static native int timeBeginPeriod(int period) throws LastErrorException;//wxc pro 2015-8-8:9:17:10 这个东西在Windows下怎么找到？ Native方法。 //wxc pro 2015-8-15:21:35:43 这个方法有什么用？
+    private static native int timeBeginPeriod(int period) throws LastErrorException;//wxc pro 2015-8-8:9:17:10 这个东西在Windows下怎么找到？ Native方法。 //wxc pro 2015-8-15:21:35:43 这个方法有什么用？  应该是winmm.dll文件里定义着的。
     private static native int timeEndPeriod(int period) throws LastErrorException;
 
     private WindowsTimer() {}

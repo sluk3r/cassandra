@@ -63,7 +63,7 @@ public class FBUtilities
     private static final String DEFAULT_TRIGGER_DIR = "triggers";
 
     private static final String OPERATING_SYSTEM = System.getProperty("os.name").toLowerCase();
-    private static final boolean IS_WINDOWS = OPERATING_SYSTEM.contains("windows");
+    private static final boolean IS_WINDOWS = OPERATING_SYSTEM.contains("windows");//wxc 2015-12-9:20:51:48  这些都是和硬件相关的， 启动的那一块就决定了， 不需要再做动态改变， 故搞成static的。
     private static final boolean HAS_PROCFS = !IS_WINDOWS && (new File(File.separator + "proc")).exists();
 
     private static volatile InetAddress localInetAddress;
